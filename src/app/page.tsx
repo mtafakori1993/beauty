@@ -116,11 +116,11 @@ export default async function Home() {
             <h2 id="routine-h" className="text-2xl font-bold sm:text-3xl">محصولات را بر اساس گام روتین پیدا کنید</h2>
             <p className="mt-2 leading-8 text-plum-600">پنج گام ساده برای مراقبت روزانه از پوست؛ هر گام را باز کنید و محصول مناسب خودتان را انتخاب کنید.</p>
           </div>
-          <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {routine.map((r) => (
               <li key={r.n + r.t}>
-                <Link href={r.href} className="group flex h-full items-center gap-4 rounded-md bg-blush-100 p-4 transition hover:bg-rasp-50 lg:flex-col lg:items-start">
-                  <span className="grid size-11 shrink-0 place-items-center rounded-full bg-rasp-600 text-lg font-bold text-white">{r.n}</span>
+                <Link href={r.href} className="group flex h-full items-center gap-4 rounded-md bg-blush-100 p-4 transition hover:bg-rasp-50">
+                  <span className="grid size-10 shrink-0 place-items-center rounded-full bg-rasp-600 text-base font-bold text-white">{r.n}</span>
                   <span><span className="block font-bold group-hover:text-rasp-700">{r.t}</span><span className="text-sm text-plum-600">{r.d}</span></span>
                 </Link>
               </li>
