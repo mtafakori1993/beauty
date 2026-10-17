@@ -18,17 +18,18 @@ const settle = async (p) => {
   await p.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight; y += 500) { window.scrollTo(0, y); await new Promise((r) => setTimeout(r, 120)); } window.scrollTo(0, 0); });
   await p.waitForLoadState("networkidle").catch(() => {});
   await p.evaluate(() => document.fonts.ready);
+  await p.waitForFunction(() => [...document.images].every((i) => i.complete && i.naturalWidth > 0), null, { timeout: 20000 }).catch(() => {});
   await p.waitForTimeout(500);
 };
 const desk = await browser.newContext({ viewport: { width: 1440, height: 900 }, locale: "fa-IR" });
 const mob = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, locale: "fa-IR" });
-const go = async (p, url) => { for (let i = 0; ; i++) { try { await p.goto(BASE + url, { waitUntil: "load", timeout: 60000 }); break; } catch (e) { if (i >= 3) throw e; } } await settle(p); };
+const go = async (p, url) => { for (let i = 0; ; i++) { try { await p.goto(BASE + url, { waitUntil: "load", timeout: 45000 }); break; } catch (e) { if (i >= 8) throw e; } } await settle(p); };
 
 const d = await desk.newPage();
 await go(d, "/"); await d.screenshot({ path: `${SHOTS}/desktop-home.png`, fullPage: true }); await d.screenshot({ path: `${SHOTS}/desktop-home-fold.png` });
 await go(d, "/collections/skincare"); await d.screenshot({ path: `${SHOTS}/skincare-category.png` });
 await go(d, "/collections/makeup"); await d.screenshot({ path: `${SHOTS}/makeup-category.png` });
-await go(d, "/products/matte-lipstick"); await d.getByRole("radio").nth(1).click(); await d.screenshot({ path: `${SHOTS}/product-detail.png` });
+await go(d, "/products/matte-lipstick"); await d.getByRole("radio").nth(1).click(); await d.evaluate(() => window.scrollTo(0, 0)); await d.waitForTimeout(300); await d.screenshot({ path: `${SHOTS}/product-detail.png` });
 await d.getByTestId("add-to-cart").click(); await d.getByTestId("cart-drawer").waitFor(); await d.screenshot({ path: `${SHOTS}/cart-drawer.png` });
 await go(d, "/products/lightweight-hydrating-serum"); await d.getByTestId("add-to-cart").click(); await d.getByTestId("cart-drawer").waitFor();
 await go(d, "/cart"); await d.getByTestId("cart-line").first().waitFor(); await d.screenshot({ path: `${SHOTS}/cart.png` });

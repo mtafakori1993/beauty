@@ -32,3 +32,10 @@ Manual, no CI/CD: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) (k3s namespace `cosme
 
 ## Support & attribution
 Support: 09040153212 · info@tafakorpardazan.ir — طراحی و توسعه توسط [تفکر پردازان](https://tafakorpardazan.ir)
+
+## Verified results (2026-10-17)
+- `tsc --noEmit`, `eslint` (0 errors), `next build` pass; Playwright 65/65 (desktop + 375px mobile) against the production build and local WooCommerce.
+- Seed idempotency: second run `created=0 updated=30`; backend `X-WP-Total: 30`.
+- Lighthouse mobile (simulated throttling, local production build): home perf 94, category 88, product 93; accessibility/best-practices/SEO 100; CLS 0.
+- Production (k3s, `kubectl top`): web ≈ 32m CPU / 180 MiB, wordpress ≈ 52m / 264 MiB, mysql ≈ 30m / 515 MiB.
+- Images: 41 generated (26 `google/gemini-nano-banana-2.1`, 15 `qwen/qwen-image-3` after the key's $1-balance threshold blocked the first model), ≈ US$1.4 total.
