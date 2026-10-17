@@ -22,7 +22,7 @@ else
   docker build -q -t "cosmetics-local/wp:${WP_TAG}" wp
 fi
 echo "==> building web image ($WEB_TAG)"
-docker build -q -t "cosmetics-local/web:${WEB_TAG}" --build-arg NEXT_PUBLIC_SITE_URL=https://beauty.shomaaa.ir --build-arg WORDPRESS_URL=http://wordpress:80 .
+docker build -q -t "cosmetics-local/web:${WEB_TAG}" --build-arg NEXT_PUBLIC_SITE_URL=https://cosmetics.shomaaa.ir --build-arg WORDPRESS_URL=http://wordpress:80 .
 
 echo "==> importing images into k3s containerd (node-local, same approach as tpsite-local/minio)"
 IMAGES=("cosmetics-local/web:${WEB_TAG}"); [ "$MODE" = "web" ] || IMAGES+=("cosmetics-local/wp:${WP_TAG}")

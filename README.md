@@ -1,4 +1,4 @@
-# Cosmetics — فروشگاه آنلاین آرایشی و مراقبت از پوست (beauty.shomaaa.ir)
+# Cosmetics — فروشگاه آنلاین آرایشی و مراقبت از پوست (cosmetics.shomaaa.ir)
 
 Persian RTL, headless **WooCommerce** storefront built with Next.js 16 (App Router) + TypeScript (strict) + Tailwind CSS 4.
 Design and development by [Tafakor Pardazan](https://tafakorpardazan.ir). Derived from the architecture of the SHOMAAA storefront but a separate codebase, backend, database and deployment.

@@ -38,8 +38,8 @@ spec:
             - { name: WORDPRESS_LOGGED_IN_SALT, valueFrom: { secretKeyRef: { name: cosmetics-secrets, key: WORDPRESS_LOGGED_IN_SALT } } }
             - { name: WORDPRESS_NONCE_SALT, valueFrom: { secretKeyRef: { name: cosmetics-secrets, key: WORDPRESS_NONCE_SALT } } }
             - { name: WORDPRESS_CONFIG_EXTRA, value: "define('DISALLOW_FILE_EDIT', true); define('WP_AUTO_UPDATE_CORE', false); define('AUTOMATIC_UPDATER_DISABLED', true);" }
-            - { name: COSMETICS_STOREFRONT_URL, value: "https://beauty.shomaaa.ir" }
-            - { name: SITE_URL, value: "https://beauty.shomaaa.ir" }
+            - { name: COSMETICS_STOREFRONT_URL, value: "https://cosmetics.shomaaa.ir" }
+            - { name: SITE_URL, value: "https://cosmetics.shomaaa.ir" }
             - { name: WP_ADMIN_USER, value: cosmetics_admin }
             - { name: WP_ADMIN_PASSWORD, valueFrom: { secretKeyRef: { name: cosmetics-secrets, key: WP_ADMIN_PASSWORD } } }
             - { name: WP_ADMIN_EMAIL, value: info@tafakorpardazan.ir }

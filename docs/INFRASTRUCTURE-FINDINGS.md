@@ -22,9 +22,9 @@ Evidence gathered over `ssh opsadmin@10.20.0.1` and the public sites. No Qlean r
 Reused: namespace-per-product, Traefik Ingress + `le` resolver + security-headers middleware, StatefulSet MySQL with `local-path` PVC, backup CronJob, default-deny NetworkPolicies, hardened pod security, node-local image import.
 Not reused: any Qlean image, credential, database, domain or config value.
 
-## DNS finding for beauty.shomaaa.ir
-Inspected 2026-10-17: `dig +short beauty.shomaaa.ir` → `193.151.152.230` (the node's public IP), so the HTTP-01 resolver can issue a certificate without any DNS change. The `shomaaa.ir` zone is hosted at `*.ns.cloud.ir`. No DNS record was changed.
+## DNS finding for cosmetics.shomaaa.ir
+Inspected 2026-10-17: `dig +short cosmetics.shomaaa.ir` → `193.151.152.230` (the node's public IP), so the HTTP-01 resolver can issue a certificate without any DNS change. The `shomaaa.ir` zone is hosted at `*.ns.cloud.ir`. No DNS record was changed.
 
 ## Cosmetics-specific decisions
-- Own namespace `cosmetics`, own MySQL StatefulSet/PVC, own WordPress, own secrets — no data, credentials or DB shared with SHOMAAA or Qlean. SHOMAAA's Ingress matches host `shomaaa.ir` only, so `beauty.shomaaa.ir` does not conflict.
+- Own namespace `cosmetics`, own MySQL StatefulSet/PVC, own WordPress, own secrets — no data, credentials or DB shared with SHOMAAA or Qlean. SHOMAAA's Ingress matches host `shomaaa.ir` only, so `cosmetics.shomaaa.ir` does not conflict.
 - A single Next.js instance cannot serve both stores without refactoring SHOMAAA (not allowed); a separate 128 MiB-request web pod is used instead. Limits are lower than SHOMAAA's (mysql 768 Mi, wordpress 512 Mi, web 384 Mi).

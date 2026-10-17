@@ -26,7 +26,7 @@ spec:
           imagePullPolicy: IfNotPresent
           env:
             - { name: WORDPRESS_URL, value: "http://wordpress:80" }
-            - { name: NEXT_PUBLIC_SITE_URL, value: "https://beauty.shomaaa.ir" }
+            - { name: NEXT_PUBLIC_SITE_URL, value: "https://cosmetics.shomaaa.ir" }
             - { name: NEWSLETTER_DIR, value: /data }
             - { name: REVALIDATE_SECRET, valueFrom: { secretKeyRef: { name: cosmetics-secrets, key: REVALIDATE_SECRET } } }
           ports: [{ name: http, containerPort: 3000 }]

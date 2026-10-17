@@ -1,5 +1,5 @@
 # TLS: Traefik ACME (HTTP-01) resolver "le", same as the other namespaces on this node.
-# Requires the public DNS A record for beauty.shomaaa.ir to point at 193.151.152.230 (not through a CDN proxy).
+# Requires the public DNS A record for cosmetics.shomaaa.ir to point at 193.151.152.230 (not through a CDN proxy).
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -14,7 +14,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: beauty.shomaaa.ir
+    - host: cosmetics.shomaaa.ir
       http: { paths: [{ path: /, pathType: Prefix, backend: { service: { name: web, port: { number: 80 } } } }] }
 ---
 # Default deny, then allow only the required flows.

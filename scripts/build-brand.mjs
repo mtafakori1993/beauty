@@ -42,7 +42,7 @@ const og = `<style>${fontCss}@font-face{font-family:VR;src:url(data:font/woff2;b
 .l{flex:1;padding:72px;display:flex;flex-direction:column;justify-content:center;gap:22px;direction:rtl}
 h1{margin:0;font-size:54px;line-height:1.4;color:#292129}h1 em{color:#b51f59;font-style:normal}p{margin:0;font-size:26px;font-family:VR;color:#6a5d66;line-height:1.9}
 .w{font-family:C;font-style:italic;font-size:48px;color:#292129;direction:ltr;display:flex;align-items:center;gap:14px}.r{width:480px;background:#f8dce7 url(data:image/webp;base64,${heroB64}) center/cover}</style>
-<body><div class="r"></div><div class="l"><div class="w"><svg viewBox="0 0 40 40" width="56">${symbol("#292129")}</svg>Cosmetics</div><h1>روتین زیبایی شما،<br><em>ساده و دلنشین</em></h1><p>مراقبت از پوست، آرایش و مراقبت از مو · beauty.shomaaa.ir</p></div></body>`;
+<body><div class="r"></div><div class="l"><div class="w"><svg viewBox="0 0 40 40" width="56">${symbol("#292129")}</svg>Cosmetics</div><h1>روتین زیبایی شما،<br><em>ساده و دلنشین</em></h1><p>مراقبت از پوست، آرایش و مراقبت از مو · cosmetics.shomaaa.ir</p></div></body>`;
 await shot(og, 1200, 630, path.join(ROOT, "src/app/opengraph-image.png"));
 await browser.close();
 console.log("brand assets written");

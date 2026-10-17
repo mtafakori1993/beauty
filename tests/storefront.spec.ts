@@ -201,7 +201,7 @@ test("product images all load (no broken images on a collection)", async ({ page
 test("SEO: canonical, title, product structured data, sitemap, robots", async ({ page, request }) => {
   await page.goto("/products/lightweight-hydrating-serum");
   await expect(page).toHaveTitle(/سرم آبرسان سبک/);
-  expect(await page.locator('link[rel="canonical"]').getAttribute("href")).toMatch(/^https?:\/\/[^/]+\/products\/lightweight-hydrating-serum$/); // host comes from NEXT_PUBLIC_SITE_URL (https://beauty.shomaaa.ir in production)
+  expect(await page.locator('link[rel="canonical"]').getAttribute("href")).toMatch(/^https?:\/\/[^/]+\/products\/lightweight-hydrating-serum$/); // host comes from NEXT_PUBLIC_SITE_URL (https://cosmetics.shomaaa.ir in production)
   const ld = await page.locator('script[type="application/ld+json"]').allInnerTexts();
   const parsed = ld.map((t) => JSON.parse(t));
   const product = parsed.find((j) => j["@type"] === "Product");

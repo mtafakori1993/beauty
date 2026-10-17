@@ -6,7 +6,7 @@ RUN npm ci --no-audit --no-fund
 
 FROM node:22-slim AS build
 WORKDIR /app
-ARG NEXT_PUBLIC_SITE_URL=https://beauty.shomaaa.ir
+ARG NEXT_PUBLIC_SITE_URL=https://cosmetics.shomaaa.ir
 ARG WORDPRESS_URL=http://wordpress:80
 ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL WORDPRESS_URL=$WORDPRESS_URL NEXT_TELEMETRY_DISABLED=1
 COPY --from=deps /app/node_modules ./node_modules

@@ -1,6 +1,6 @@
 # Deployment (manual — no CI/CD)
 
-Target: the existing k3s node (`ssh opsadmin@10.20.0.1`, reachable over WireGuard), namespace **`cosmetics`**, public host `beauty.shomaaa.ir`.
+Target: the existing k3s node (`ssh opsadmin@10.20.0.1`, reachable over WireGuard), namespace **`cosmetics`**, public host `cosmetics.shomaaa.ir`.
 Architecture and the reasoning behind it: [INFRASTRUCTURE-FINDINGS.md](INFRASTRUCTURE-FINDINGS.md).
 
 ```
@@ -13,7 +13,7 @@ WordPress admin is NOT exposed publicly (port-forward only).
 
 ## Prerequisites
 - Docker + WireGuard access to `10.20.0.1`; `git`, `node`.
-- DNS: `beauty.shomaaa.ir` **A → 193.151.152.230**, DNS-only (no CDN proxy), otherwise Let's Encrypt HTTP-01 cannot succeed.
+- DNS: `cosmetics.shomaaa.ir` **A → 193.151.152.230**, DNS-only (no CDN proxy), otherwise Let's Encrypt HTTP-01 cannot succeed.
 - Secrets exist in the cluster (`deploy/create-secrets.sh`, one-time, idempotent: does nothing if the Secret exists).
 
 ## Secrets (names only — values live in the cluster)
@@ -36,9 +36,9 @@ Content/catalog change only: `deploy/deploy.sh seed` (seed is idempotent: matche
 ## Verify
 ```bash
 kubectl -n cosmetics get pods,ingress,pvc             # via: ssh opsadmin@10.20.0.1 sudo k3s kubectl ...
-curl -sI https://beauty.shomaaa.ir/                          # 200 once DNS+cert are ready
-curl -s https://beauty.shomaaa.ir/api/health?deep=1          # {"ok":true,"backend":"up"}
-curl -s https://beauty.shomaaa.ir/sitemap.xml | grep -c /products/   # 30
+curl -sI https://cosmetics.shomaaa.ir/                          # 200 once DNS+cert are ready
+curl -s https://cosmetics.shomaaa.ir/api/health?deep=1          # {"ok":true,"backend":"up"}
+curl -s https://cosmetics.shomaaa.ir/sitemap.xml | grep -c /products/   # 30
 ```
 Before DNS points here, check from inside the cluster: `kubectl -n cosmetics port-forward svc/web 3300:80` then `curl localhost:3300/api/health?deep=1`.
 
@@ -60,7 +60,7 @@ Copy backups off-server regularly (same caveat as the GitLab notes in `/opt/infr
 ssh -L 8081:localhost:8081 opsadmin@10.20.0.1 'sudo k3s kubectl -n cosmetics port-forward svc/wordpress 8081:80'
 # then browse http://localhost:8081/wp-admin  (user: cosmetics_admin, password in ~/.cosmetics-prod-secrets)
 ```
-(WordPress `home/siteurl` is `https://beauty.shomaaa.ir`; over the port-forward you may need a hosts entry or `?` redirects — use `wp` CLI for routine tasks: `kubectl -n cosmetics exec deploy/wordpress -- wp --allow-root ...`.)
+(WordPress `home/siteurl` is `https://cosmetics.shomaaa.ir`; over the port-forward you may need a hosts entry or `?` redirects — use `wp` CLI for routine tasks: `kubectl -n cosmetics exec deploy/wordpress -- wp --allow-root ...`.)
 
 ## Cache invalidation
 `POST /api/revalidate` with header `x-revalidate-secret: <REVALIDATE_SECRET>` clears the catalog cache (otherwise data refreshes every 2 minutes).
