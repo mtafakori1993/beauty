@@ -1,0 +1,10 @@
+[
+  {"slug":"skincare","name":"مراقبت از پوست","parent":null,"description":"روتین کامل مراقبت از پوست؛ از پاک‌سازی تا آبرسانی و مراقبت ویژه"},
+  {"slug":"cleansers","name":"پاک‌کننده و تونر","parent":"skincare","description":"ژل، فوم، میسلار واتر، بالم پاک‌کننده و تونر برای اولین گام روتین"},
+  {"slug":"moisturizers-serums","name":"مرطوب‌کننده و سرم","parent":"skincare","description":"کرم‌های روز و شب، ژل‌کرم و سرم برای آبرسانی و نرمی پوست"},
+  {"slug":"special-care","name":"مراقبت ویژه پوست","parent":"skincare","description":"ماسک، اسکراب، کرم دور چشم و مراقبت از لب و دست"},
+  {"slug":"makeup","name":"آرایش","parent":null,"description":"رژلب، کوشن، رژگونه، ریمل و سایه چشم برای آرایش روزانه و مهمانی"},
+  {"slug":"sun-care","name":"ضدآفتاب","parent":null,"description":"ضدآفتاب‌های روزانه با بافت‌های سبک، فلوئید و رنگی"},
+  {"slug":"hair-care","name":"مراقبت از مو","parent":null,"description":"شامپو، نرم‌کننده و روغن مراقبت برای موهای نرم و براق"},
+  {"slug":"beauty-tools","name":"ابزار و اکسسوری زیبایی","parent":null,"description":"براش، اسفنج و کیف آرایشی برای آرایش دقیق‌تر و مرتب‌تر"}
+]

@@ -1,0 +1,32 @@
+# deps / build
+node_modules
+.next
+out
+build
+coverage
+*.tsbuildinfo
+next-env.d.ts
+# env & secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+# generated sources & local data
+assets-src/
+generated/
+.data/
+test-results/
+playwright-report/
+.DS_Store
+npm-debug.log*
+# WordPress image build inputs (fetched/generated)
+wp/vendor/
+wp/languages/
+wp/seed/media/
+wp/seed/products.json
+wp/seed/categories.json
+seo/node_modules
+
+seo/data
+seo/node_modules

@@ -1,0 +1,174 @@
+@import "tailwindcss";
+
+/*
+ * Cosmetics design tokens.
+ * Structure follows Adobe Spectrum's discipline (4px spacing grid, tiered text scale, explicit state tokens,
+ * 2px focus ring with offset) — implemented by hand; no Spectrum package is installed.
+ */
+@theme {
+  /* Color: raspberry / blush palette (tokens from the Cosmetics brief, contrast-checked) */
+  --color-blush-50: #fffcfd;   /* warm white */
+  --color-blush-100: #fff5f8;  /* pale pink */
+  --color-blush-200: #f8e6ec;
+  --color-blush-300: #eadde4;  /* border */
+  --color-plum-950: #1d141c;
+  --color-plum-900: #292129;   /* main text */
+  --color-plum-800: #3a2f39;
+  --color-plum-700: #54464f;
+  --color-plum-600: #6a5d66;   /* muted text (>= 5.9:1 on warm white) */
+  --color-plum-500: #8a7c85;
+  --color-rasp-700: #7d123b;   /* deep raspberry */
+  --color-rasp-600: #b51f59;   /* primary raspberry */
+  --color-rasp-500: #cc3f76;
+  --color-rasp-300: #e9a3be;
+  --color-rasp-200: #f4c6d8;
+  --color-rasp-100: #f8dce7;   /* soft raspberry */
+  --color-rasp-50: #fdeef4;
+  --color-sage-700: #1f5f3f;
+  --color-sage-600: #26734d;
+  --color-sage-100: #e2f1e8;
+  --color-danger-600: #b42335;
+  --color-danger-100: #fbe4e7;
+  --color-success-600: #26734d;
+  --color-success-100: #e2f1e8;
+  --color-warning-600: #8f6414;
+  --color-warning-100: #f6ebcf;
+
+  /* Semantic aliases */
+  --color-surface: var(--color-blush-50);
+  --color-surface-raised: #ffffff;
+  --color-surface-sunken: var(--color-blush-100);
+  --color-line: var(--color-blush-300);
+  --color-text: var(--color-plum-900);
+  --color-text-muted: var(--color-plum-600);
+  --color-accent: var(--color-rasp-600);
+
+  /* Type */
+  --font-sans: var(--font-vazir), "Vazirmatn", system-ui, sans-serif;
+  --font-display: var(--font-cormorant), "Times New Roman", serif;
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1.25rem;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.5rem;
+  --text-base: 1rem;
+  --text-base--line-height: 1.75rem;
+  --text-lg: 1.125rem;
+  --text-lg--line-height: 1.9rem;
+  --text-xl: 1.25rem;
+  --text-xl--line-height: 2rem;
+  --text-2xl: 1.5rem;
+  --text-2xl--line-height: 2.25rem;
+  --text-3xl: 1.875rem;
+  --text-3xl--line-height: 2.6rem;
+  --text-4xl: 2.5rem;
+  --text-4xl--line-height: 3.2rem;
+  --text-5xl: 3.25rem;
+  --text-5xl--line-height: 4.2rem;
+
+  /* Shape + elevation: small radii, subtle shadows */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --shadow-raised: 0 1px 2px rgb(125 18 59 / 0.06), 0 6px 18px rgb(125 18 59 / 0.08);
+  --shadow-overlay: 0 12px 40px rgb(41 33 41 / 0.2);
+
+  /* Breakpoints (default Tailwind set + wide) */
+  --breakpoint-3xl: 1920px;
+
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+:root {
+  color-scheme: light;
+  --header-h: 64px;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--header-h) + 16px);
+}
+
+body {
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-feature-settings: "kern", "liga";
+  text-rendering: optimizeLegibility;
+  overflow-wrap: break-word;
+}
+
+/* Focus: 2px ring, 2px offset (Spectrum key-focus pattern) — visible for keyboard only */
+:where(a, button, input, select, textarea, summary, [role="button"], [tabindex]):focus-visible {
+  outline: 2px solid var(--color-plum-900);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+:where([data-on-dark]) :focus-visible {
+  outline-color: var(--color-blush-100);
+}
+
+::selection {
+  background: var(--color-rasp-300);
+  color: var(--color-plum-950);
+}
+
+/* Latin tokens (SKU, codes, phone numbers) keep LTR order inside RTL text */
+.ltr {
+  direction: ltr;
+  unicode-bidi: isolate;
+  display: inline-block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes shimmer {
+  to {
+    background-position-x: -200%;
+  }
+}
+.skeleton {
+  background: linear-gradient(90deg, var(--color-blush-200) 25%, var(--color-blush-100) 37%, var(--color-blush-200) 63%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
+  border-radius: var(--radius-sm);
+}
+
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes slide-in-start {
+  from {
+    transform: translateX(-100%);
+  }
+}
+@keyframes slide-in-end {
+  from {
+    transform: translateX(100%);
+  }
+}
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
+/* Brand motif: an arch (window) crop used for hero, category and collection imagery */
+.arch { border-radius: 999px 999px var(--radius-md) var(--radius-md); }
+.arch-sm { border-radius: 999px 999px var(--radius-sm) var(--radius-sm); }
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }

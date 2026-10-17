@@ -1,0 +1,56 @@
+# TLS: Traefik ACME (HTTP-01) resolver "le", same as the other namespaces on this node.
+# Requires the public DNS A record for beauty.shomaaa.ir to point at 193.151.152.230 (not through a CDN proxy).
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cosmetics
+  namespace: cosmetics
+  labels: { app: cosmetics }
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.middlewares: cosmetics-security-headers@kubernetescrd
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.tls.certresolver: le
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: beauty.shomaaa.ir
+      http: { paths: [{ path: /, pathType: Prefix, backend: { service: { name: web, port: { number: 80 } } } }] }
+---
+# Default deny, then allow only the required flows.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: { name: default-deny-ingress, namespace: cosmetics }
+spec: { podSelector: {}, policyTypes: [Ingress] }
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: { name: allow-traefik-to-web, namespace: cosmetics }
+spec:
+  podSelector: { matchLabels: { app: cosmetics, component: web } }
+  policyTypes: [Ingress]
+  ingress:
+    - from: [{ namespaceSelector: { matchLabels: { kubernetes.io/metadata.name: kube-system } } }]
+      ports: [{ port: 3000, protocol: TCP }]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: { name: allow-web-to-wordpress, namespace: cosmetics }
+spec:
+  podSelector: { matchLabels: { app: cosmetics, component: wordpress } }
+  policyTypes: [Ingress]
+  ingress:
+    - from: [{ podSelector: { matchLabels: { app: cosmetics, component: web } } }]
+      ports: [{ port: 80, protocol: TCP }]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: { name: allow-wordpress-and-jobs-to-mysql, namespace: cosmetics }
+spec:
+  podSelector: { matchLabels: { app: cosmetics, component: mysql } }
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - podSelector: { matchLabels: { app: cosmetics, component: wordpress } }
+        - podSelector: { matchLabels: { app: cosmetics, role: job } }
+      ports: [{ port: 3306, protocol: TCP }]

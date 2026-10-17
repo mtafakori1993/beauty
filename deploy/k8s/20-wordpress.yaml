@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: { name: wp-uploads, namespace: cosmetics }
+spec: { accessModes: [ReadWriteOnce], storageClassName: local-path, resources: { requests: { storage: 5Gi } } }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress
+  namespace: cosmetics
+  labels: { app: cosmetics, component: wordpress }
+spec:
+  replicas: 1
+  strategy: { type: Recreate }   # uploads PVC is ReadWriteOnce
+  selector:
+    matchLabels: { app: cosmetics, component: wordpress }
+  template:
+    metadata:
+      labels: { app: cosmetics, component: wordpress }
+    spec:
+      automountServiceAccountToken: false
+      securityContext: { seccompProfile: { type: RuntimeDefault } }
+      containers:
+        - name: wordpress
+          image: cosmetics-local/wp:__WP_TAG__
+          imagePullPolicy: IfNotPresent
+          env:
+            - { name: WORDPRESS_DB_HOST, value: mysql }
+            - { name: WORDPRESS_DB_NAME, value: cosmetics }
+            - { name: WORDPRESS_DB_USER, value: cosmetics }
+            - { name: WORDPRESS_DB_PASSWORD, valueFrom: { secretKeyRef: { name: cosmetics-secrets, key: MYSQL_PASSWORD } } }
+            - { name: WORDPRESS_AUTH_KEY, valueFrom: { secretKeyRef: { name: cosmetics-secrets, key: WORDPRESS_AUTH_KEY } } }
+            - { name: WORDPRESS_SECURE_AUTH_KEY, valueFrom: { secretKeyRef: { name: cosmetics-secrets, key: WORDPRESS_SECURE_AUTH_KEY } } }
+            - { name: WORDPRESS_LOGGED_IN_KEY, valueFrom: { secretKeyRef: { name: cosmetics-secrets, key: WORDPRESS_LOGGED_IN_KEY } } }
+            - { name: WORDPRESS_NONCE_KEY, valueFrom: { secretKeyRef: { name: cosmetics-secrets, key: WORDPRESS_NONCE_KEY } } }
+            - { name: WORDPRESS_AUTH_SALT, valueFrom: { secretKeyRef: { name: cosmetics-secrets, key: WORDPRESS_AUTH_SALT } } }
+            - { name: WORDPRESS_SECURE_AUTH_SALT, valueFrom: { secretKeyRef: { name: cosmetics-secrets, key: WORDPRESS_SECURE_AUTH_SALT } } }
+            - { name: WORDPRESS_LOGGED_IN_SALT, valueFrom: { secretKeyRef: { name: cosmetics-secrets, key: WORDPRESS_LOGGED_IN_SALT } } }
+            - { name: WORDPRESS_NONCE_SALT, valueFrom: { secretKeyRef: { name: cosmetics-secrets, key: WORDPRESS_NONCE_SALT } } }
+            - { name: WORDPRESS_CONFIG_EXTRA, value: "define('DISALLOW_FILE_EDIT', true); define('WP_AUTO_UPDATE_CORE', false); define('AUTOMATIC_UPDATER_DISABLED', true);" }
+            - { name: COSMETICS_STOREFRONT_URL, value: "https://beauty.shomaaa.ir" }
+            - { name: SITE_URL, value: "https://beauty.shomaaa.ir" }
+            - { name: WP_ADMIN_USER, value: cosmetics_admin }
+            - { name: WP_ADMIN_PASSWORD, valueFrom: { secretKeyRef: { name: cosmetics-secrets, key: WP_ADMIN_PASSWORD } } }
+            - { name: WP_ADMIN_EMAIL, value: info@tafakorpardazan.ir }
+          ports: [{ name: http, containerPort: 80 }]
+          startupProbe: { httpGet: { path: /healthz-live.txt, port: 80 }, periodSeconds: 5, failureThreshold: 36 }
+          readinessProbe: { httpGet: { path: /wp-json/cosmetics/v1/health, port: 80 }, periodSeconds: 10, timeoutSeconds: 5 }
+          livenessProbe: { httpGet: { path: /healthz-live.txt, port: 80 }, periodSeconds: 20, timeoutSeconds: 5 }
+          resources: { requests: { cpu: 50m, memory: 160Mi }, limits: { cpu: "1", memory: 512Mi } }
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities: { drop: [ALL], add: [CHOWN, DAC_OVERRIDE, FOWNER, SETGID, SETUID, NET_BIND_SERVICE] }
+          volumeMounts: [{ name: uploads, mountPath: /var/www/html/wp-content/uploads }]
+      volumes: [{ name: uploads, persistentVolumeClaim: { claimName: wp-uploads } }]
+---
+apiVersion: v1
+kind: Service
+metadata: { name: wordpress, namespace: cosmetics }
+spec:
+  selector: { app: cosmetics, component: wordpress }
+  ports: [{ name: http, port: 80, targetPort: 80 }]
